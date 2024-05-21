@@ -6,25 +6,22 @@ on:
       - main
 
 jobs:
-  stagging:
-    name: Deploy to Stagging
-    environment:
-        name: Staging
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
-
-        - name: Deploy to Staging
-          run: |
-            echo "Deploying to Staging"
-            echo "Deployed to Staging"
-
-    production:
-      name: Deploy to Production
-      environment: Production
+  staging:
+    name: Deploy to Staging
     runs-on: ubuntu-latest
-    needs: stagging
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to Staging
+        run: |
+          echo "Deploying to Staging"
+          echo "Deployed to Staging"
+
+  production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: staging
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -33,6 +30,3 @@ jobs:
         run: |
           echo "Deploying to Production"
           echo "Deployed to Production"
-
-
-
