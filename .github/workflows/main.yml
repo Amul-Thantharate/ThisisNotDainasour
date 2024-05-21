@@ -23,6 +23,9 @@ jobs:
         with:
           terraform_version: 0.14.7
         
+      - working-directory: ./terraform
+        run: "Working directory: terraform"
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
