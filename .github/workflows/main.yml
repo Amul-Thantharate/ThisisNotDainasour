@@ -24,7 +24,7 @@ jobs:
     if:  github.event.environment == 'production'
     name: Deploy to Production
     environment:
-      name: Production
+      name: production
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
