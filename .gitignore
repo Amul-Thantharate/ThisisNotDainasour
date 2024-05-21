@@ -211,3 +211,4 @@ pip-selfcheck.json
 *.tfstate.backup
 .terraform/
 .terraform.lock.hcl
+.dccache
