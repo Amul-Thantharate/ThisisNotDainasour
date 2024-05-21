@@ -21,7 +21,7 @@ jobs:
           echo "Deployed to Staging"
 
   production:
-    if:  github.event.ref == 'refs/heads/main'
+    if:  github.event.inputs.releaseType == 'production'
     name: Deploy to Production
     environment:
       name: production
