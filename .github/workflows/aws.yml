@@ -1,0 +1,27 @@
+name: Multi Stage Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  stagging:
+    name: Deploy to Stagging
+    enviorment: Terraform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.14.7
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan
+
