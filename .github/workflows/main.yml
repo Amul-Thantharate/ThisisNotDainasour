@@ -23,9 +23,6 @@ jobs:
         with:
           terraform_version: 0.14.7
         
-      - working-directory: ./terraform
-        run: "Working directory: terraform"
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -33,21 +30,24 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Change Directory
+        run: cd terraform
+
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Plan
         run: terraform plan
 
-  production:
-    name: Deploy to Production
-    environment:
-      name: Production
-    runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Echo
-        run: echo "Deploying to Production"
+  # production:
+  #   name: Deploy to Production
+  #   environment:
+  #     name: Production
+  #   runs-on: ubuntu-latest
+  #   if: github.event.ref == 'refs/heads/main'
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #     - name: Echo
+  #       run: echo "Deploying to Production"
       
