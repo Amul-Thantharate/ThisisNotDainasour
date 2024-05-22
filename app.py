@@ -40,7 +40,7 @@ st.set_page_config(
 )
 
 st.image('static/dino-logo.png',width=100)
-st.header("THIS :green[IS] :orange[NOT] A :blue[DINOSAUR] :yellow[TESTING]", divider='rainbow')
+st.header("THIS :green[IS] A :blue[DINOSAUR]", divider='rainbow')
 st.markdown(':green[_Jurassic or Just-a-pic? Let our Dino-Detective decide!_]')
 
 file = st.file_uploader("Upload the photo or image you want to check for any hidden Dinosaurs.", type=["jpg", "jpeg", "png"])
