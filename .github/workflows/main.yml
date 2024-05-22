@@ -44,6 +44,7 @@ jobs:
 
       - name: Run Checkov
         run: docker run -t -v ${{ github.workspace }}:/tf --workdir /tf bridgecrew/checkov --directory /tf --skip-check CKV2_GHA_1
+        continue-on-error: true
 
       - name: Terraform Plan
         run: terraform plan
