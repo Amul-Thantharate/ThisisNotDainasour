@@ -33,12 +33,6 @@ jobs:
       - name: Terraform Init
         run: terraform init
       
-      # - name: Tfsec
-      #   uses: tfsec/action@v0.3.0
-      #   with:
-      #     tfsec_version: latest
-      #   continue-on-error: true
-      
       - name: Terraform Validate
         run: terraform validate
 
@@ -49,15 +43,15 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
 
-  production:
-    name: Deploy to Production
-    environment:
-      name: Production
-    runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Echo
-        run: echo "Deploying to Production"
+  # production:
+  #   name: Deploy to Production
+  #   environment:
+  #     name: Production
+  #   runs-on: ubuntu-latest
+  #   if: github.event.ref == 'refs/heads/main'
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #     - name: Echo
+  #       run: echo "Deploying to Production"
       
