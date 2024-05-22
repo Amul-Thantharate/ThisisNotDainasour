@@ -46,8 +46,11 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+      # - name: Terraform Apply
+        # run: terraform apply -auto-approve
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
 
   production:
     name: Deploy to Production
@@ -96,4 +99,4 @@ jobs:
           task-definition: ${{ steps.task-def-1.outputs.task-definition }}
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
+          wait-for-service-stability: false
