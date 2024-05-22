@@ -32,14 +32,19 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+      
+      # - name: Tfsec
+      #   uses: tfsec/action@v0.3.0
+      #   with:
+      #     tfsec_version: latest
+      #   continue-on-error: true
+      
+      - name: Terraform Validate
+        run: terraform validate
 
-      - name: Run Snyk to check Kubernetes manifest file for issues
-        uses: snyk/actions/iac@master
-        env:
-            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-            command: snyk auth ${{ secrets.SNYK_TOKEN }} 
-            args: --servirty-threshold=high 
+      - name: Run Checkov
+        run: docker run -t -v ${{ github.workspace }}:/tf --workdir /tf bridgecrew/checkov --directory /tf --skip-check CKV2_GHA_1
+
       - name: Terraform Plan
         run: terraform plan
 
