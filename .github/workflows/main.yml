@@ -46,6 +46,11 @@ jobs:
         run: docker run -t -v ${{ github.workspace }}:/tf --workdir /tf bridgecrew/checkov --directory /tf --skip-check CKV2_GHA_1
         continue-on-error: true
 
+      - name: Publish Checkov Results
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: checkov-report.sarif
+
       - name: Terraform Plan
         run: terraform plan
 
