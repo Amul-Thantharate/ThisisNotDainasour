@@ -3,7 +3,7 @@ name: Multi Stage Deploy
 on:
   push:
     branches:
-      - main
+      - feature
 env:
     AWS_REGION: ap-southeast-1
     ECS_CLUSTER: app_cluster
@@ -54,7 +54,7 @@ jobs:
     environment:
       name: Production
     runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main'
+    if: github.event.ref == 'refs/heads/feature'
     steps:
 
       - name: Login to Amazon ECR
