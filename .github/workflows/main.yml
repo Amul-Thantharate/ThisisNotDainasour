@@ -38,8 +38,13 @@ jobs:
         env:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-            command: snyk iac test
+            command: snyk iac test .
             args: --servertity-threshold=high
+      
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+            sarif_file: snyk.sarif 
 
       - name: Terraform Plan
         run: terraform plan
