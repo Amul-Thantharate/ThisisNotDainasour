@@ -38,7 +38,7 @@ jobs:
         env:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-            command: snyk auth $SNYK_TOKEN 
+            command: snyk auth ${{ secrets.SNYK_TOKEN }} 
             args: --servirty-threshold=high 
       - name: Terraform Plan
         run: terraform plan
