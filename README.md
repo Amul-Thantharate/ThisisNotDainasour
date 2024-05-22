@@ -20,3 +20,6 @@ For fun...and a bit more. I am a Machine Learning Engineer with 2 years of work 
 2. Click on the 'Detect' button
 3. Wait for the app to process the image
 4. Synk Code test
+
+## How does it work?
+The app uses a pre-trained model to detect the presence of Dinosaurs in the image. The model has been trained on a dataset of images containing Dinosaurs and other objects. The app uses the model to predict the presence of Dinosaurs in the uploaded image.

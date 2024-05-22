@@ -1,12 +1,16 @@
 name: Multi Stage Deploy
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
 env:
     AWS_REGION: ap-southeast-1
+    ECS_CLUSTER: app_cluster
+    CONTAINER_NAME: app
+    ECS_SERVICE: app_service
+    ECS_TD: .github/workflows/td.json
 
 jobs:
   staging:
@@ -43,15 +47,44 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
 
-  # production:
-  #   name: Deploy to Production
-  #   environment:
-  #     name: Production
-  #   runs-on: ubuntu-latest
-  #   if: github.event.ref == 'refs/heads/main'
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-  #     - name: Echo
-  #       run: echo "Deploying to Production"
-      
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+
+  production:
+    name: Deploy to Production
+    environment:
+      name: Production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+            ECR_REGISTRY: "058264422820.dkr.ecr.ap-southeast-1.amazonaws.com"
+            ECR_REPOSITORY: "app_repo"
+            IMAGE_TAG: latest
+        run: |
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+            echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def-1
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+            task-definition: ${{ env.ECS_TD }}
+            container-name: ${{ env.CONTAINER_NAME }}
+            image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def-1.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: false
